@@ -17,30 +17,26 @@ export function useFormOptions() {
         const entries = await Promise.all(
           Object.entries(OPTION_SERVICES).map(async ([key, service]) => {
             const res = await service();
+            const list = res.data?.data ?? res.data ?? [];
 
             let options = [];
-
             if (key === "packages") {
-              options = res.data.map((pkg) => ({
+              options = list.map((pkg) => ({
                 value: pkg._id,
                 label: pkg.packageName,
               }));
             }
-
             if (key === "trainers") {
-              options = res.data.map((trainer) => ({
+              options = list.map((trainer) => ({
                 value: trainer._id,
                 label: trainer.fullName,
               }));
             }
-
             return [key, options];
           })
         );
-
         setOptionsMap(Object.fromEntries(entries));
       } catch (err) {
-        console.error(err);
         setError(err);
       } finally {
         setOptionsLoading(false);
@@ -50,9 +46,5 @@ export function useFormOptions() {
     fetchOptions();
   }, []);
 
-  return {
-    optionsMap,
-    optionsLoading,
-    error,
-  };
+  return { optionsMap, optionsLoading, error };
 }

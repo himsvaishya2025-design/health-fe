@@ -1,142 +1,70 @@
-
-
-
-
-
-export const OPTIONS_ENDPOINTS={
-  trainers:"/"
-  packages:""
-}
-
-
-
-
-
-
-export const listMemberFields = [
-
-    {
-        name: "fullName",
-        label: "Full Name",
-        type: "text",
-        required: true,
-    },
-
-    {
-        name: "phone",
-        label: "Phone",
-        type: "text",
-        required: true,
-    },
-
-    {
-        name: "gender",
-        label: "Gender",
-        type: "select",
-        options: [
-            { label: "Male", value: "Male" },
-            { label: "Female", value: "Female" }
-        ],
-        
-    },
-
-    {
-        name: "packageId",
-        label: "Package",
-        type: "select",
-        optionsKey:"packages"
-      
-         
-
-    },
-
-    {
-        name: "trainerId",
-        label: "Trainer",
-        type: "select",
-       optionsKey:"trainers"
-    },
-
-    {
-        name: "joiningDate",
-        label: "Joining Date",
-        type: "date"
-    },
-
-    {
-        name: "membershipEndDate",
-        label: "Membership End Date",
-        type: "date"
-    },
-
-    {
-        name: "address",
-        label: "Address",
-        type: "textarea"
-    }
+export const memberFields = [
+  {
+    name: "fullName",
+    label: "Full Name",
+    type: "text",
+    required: true,
+    placeholder: "Enter full name",
+  },
+  {
+    name: "phone",
+    label: "Phone",
+    type: "text",
+    required: true,
+    placeholder: "e.g. 9876543210",
+  },
+  {
+    name: "gender",
+    label: "Gender",
+    type: "select",
+    options: [
+      { label: "Male", value: "Male" },
+      { label: "Female", value: "Female" },
+    ],
+  },
+  {
+    name: "packageId",
+    label: "Package",
+    type: "select",
+    optionsKey: "packages",
+    getValue: (val) => val?._id ?? val ?? "",
+  },
+  {
+    name: "trainerId",
+    label: "Trainer",
+    type: "select",
+    optionsKey: "trainers",
+    getValue: (val) => val?._id ?? val ?? "",
+  },
+  {
+    name: "joiningDate",
+    label: "Joining Date",
+    type: "date",
+    getValue: (val) => (val ? val.substring(0, 10) : ""),
+  },
+  {
+    name: "membershipEndDate",
+    label: "Membership End Date",
+    type: "date",
+    getValue: (val) => (val ? val.substring(0, 10) : ""),
+  },
+  {
+    name: "status",
+    label: "Status",
+    type: "select",
+    options: [
+      { label: "Active", value: "Active" },
+      { label: "Inactive", value: "Inactive" },
+      { label: "Expired", value: "Expired" },
+      { label: "Pending", value: "Pending" },
+    ],
+    defaultValue: "Active",
+  },
+  {
+    name: "address",
+    label: "Address",
+    type: "textarea",
+    placeholder: "Street, city, state…",
+    colSpan: 2,
+  },
 ];
-
-
-
-
-
-
-
-export const addMemberFields=[
-    {
-        name: "fullName",
-        label: "Full Name",
-        type: "text",
-        required: true,
-    },
-
-    {
-        name: "phone",
-        label: "Phone",
-        type: "text",
-        required: true,
-    },
-
-    {
-        name: "gender",
-        label: "Gender",
-        type: "select",
-        options: [
-            { label: "Male", value: "Male" },
-            { label: "Female", value: "Female" }
-        ]
-    },
-
-    {
-        name: "packageId",
-        label: "Package",
-        type: "select",
-        optionsKey:"packages"
-    },
-
-    {
-        name: "trainerId",
-        label: "Trainer",
-        type: "select",
-        optionsKey:"trainers"
-       
-    },
-
-    {
-        name: "joiningDate",
-        label: "Joining Date",
-        type: "date"
-    },
-
-    {
-        name: "membershipEndDate",
-        label: "Membership End Date",
-        type: "date"
-    },
-
-    {
-        name: "address",
-        label: "Address",
-        type: "textarea"
-    }
-]

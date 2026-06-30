@@ -1,95 +1,90 @@
-import React, { useEffect, useState } from 'react'
-
-
-
-
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import MemberForm from "../../components/MemberForm";
-// import { getMemberFields } from "../../formJson/form"
-import { useParams } from 'react-router-dom';
-import { getMemberById ,getMembers,getTrainers} from '../../services/memberApi';
+import Toast from "../../components/Toast";
+import { memberFields } from "../../formJson/form";
+import { useFormOptions } from "../../hooks/useFormOptions";
+import { getMemberById, updateMember } from "../../services/memberApi";
+
 const EditMember = () => {
+  const { memberId } = useParams();
+  const navigate = useNavigate();
 
+  const { optionsMap, optionsLoading } = useFormOptions();
+  const [member, setMember] = useState(null);
+  const [fetching, setFetching] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
 
-    const { memberId } = useParams()
+  const fields = useMemo(
+    () =>
+      memberFields.map((f) =>
+        f.optionsKey ? { ...f, options: optionsMap[f.optionsKey] ?? [] } : f
+      ),
+    [optionsMap]
+  );
 
-
-
-    console.log("memberId", memberId);
-
-    const handleCreate = async (data) => {
-
-        console.log(data);
-
-        // await createMember(data)
-
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await getMemberById(memberId);
+        setMember(res.data?.data ?? res.data);
+      } catch {
+        setToast({ type: "error", message: "Failed to load member details." });
+      } finally {
+        setFetching(false);
+      }
     };
+    load();
+  }, [memberId]);
 
-  
-
-    const [member,setMember]=useState({});
-const [packages,setPackages]=useState([]);
-const [trainers,setTrainers]=useState([]);
-
-
-// const fields = useMemo(() => {
-
-//    return getMemberFields({
-//       packages,
-//       trainers,
-//    });
-
-// }, [packages, trainers]);
-
-useEffect(()=>{
-
-   const loadData=async()=>{
-
-      const memberRes=await getMemberById(memberId);
-
-      const packageRes=await getPackages();
-
-      const trainerRes=await getTrainers();
-
-      setMember(memberRes.data);
-
-      setPackages(packageRes.data);
-
-      setTrainers(trainerRes.data);
-
-   }
-
-   loadData();
-
-},[memberId]);
-
-
-
-
-
-
-
-
-    if (!member) {
-        return (<>
-            <p>
-                Loading data
-            </p>
-
-        </>)
+  const handleUpdate = async (data) => {
+    setLoading(true);
+    try {
+      await updateMember(memberId, data);
+      setToast({ type: "success", message: "Member updated successfully!" });
+      setTimeout(() => navigate("/members"), 1500);
+    } catch (err) {
+      setToast({
+        type: "error",
+        message: err?.response?.data?.message ?? "Failed to update member. Please try again.",
+      });
+    } finally {
+      setLoading(false);
     }
+  };
 
+  if (fetching || optionsLoading) {
     return (
-
-        <MemberForm
-            title="Edit Member"
-            fields={fields}
-            initialValues={member}
-
-            mode="edit"
-            onSubmit={handleCreate}
-        />
-
+      <div className="flex items-center justify-center h-64">
+        <div className="flex flex-col items-center gap-3 text-gray-500">
+          <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm">Loading member…</p>
+        </div>
+      </div>
     );
+  }
+
+  return (
+    <>
+      {toast && (
+        <Toast
+          type={toast.type}
+          message={toast.message}
+          onClose={() => setToast(null)}
+        />
+      )}
+      <MemberForm
+        title="Edit Member"
+        fields={fields}
+        initialValues={member ?? {}}
+        mode="edit"
+        onSubmit={handleUpdate}
+        onCancel={() => navigate("/members")}
+        loading={loading}
+      />
+    </>
+  );
 };
 
 export default EditMember;
