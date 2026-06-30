@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 
 import MemberForm from "../../components/MemberForm";
-import { getMemberFields } from "../../formJson/form"
+// import { getMemberFields } from "../../formJson/form"
 import { useParams } from 'react-router-dom';
 import { getMemberById ,getMembers,getTrainers} from '../../services/memberApi';
 const EditMember = () => {
@@ -31,14 +31,14 @@ const [packages,setPackages]=useState([]);
 const [trainers,setTrainers]=useState([]);
 
 
-const fields = useMemo(() => {
+// const fields = useMemo(() => {
 
-   return getMemberFields({
-      packages,
-      trainers,
-   });
+//    return getMemberFields({
+//       packages,
+//       trainers,
+//    });
 
-}, [packages, trainers]);
+// }, [packages, trainers]);
 
 useEffect(()=>{
 

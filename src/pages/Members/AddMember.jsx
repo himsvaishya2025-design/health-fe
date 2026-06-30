@@ -1,13 +1,17 @@
+import { useState,useEffect } from "react";
 import MemberForm from "../../components/MemberForm";
+
 import {addMemberFields} from "../../formJson/form";
-import { getMemberFields } from "../../formJson/form"
+import { listMemberFields } from "../../formJson/form"
 import { getPackages,getTrainers } from "../../services/memberApi";
+
+
+
 
 const AddMember = () => {
 
 
-    const [packages, setPackages] = useState([]);
-const [trainers, setTrainers] = useState([]);
+  
 
   const handleCreate = async (data) => {
 
@@ -18,21 +22,21 @@ const [trainers, setTrainers] = useState([]);
     };
     console.log("addMemberfileds",addMemberFields)
 
-    const fields = useMemo(() => {
+//     const fields = useMemo(() => {
 
-   return getMemberFields({
-      packages,
-      trainers,
-   });
+//    return getMemberFields({
+//       packages,
+//       trainers,
+//    });
 
-}, [packages, trainers]);
+// }, [packages, trainers]);
 
 useEffect(() => {
    const loadData = async () => {
 
       const packageRes = await getPackages();
-      const trainerRes = await getTrainers();
-      const packageRes = await getPackages();
+     
+      
 console.log("packageRes", packageRes);
 
 const trainerRes = await getTrainers();
