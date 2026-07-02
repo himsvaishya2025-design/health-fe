@@ -1,3 +1,6 @@
+import { formatDate } from "../utils/formatDate";
+import { formatTime } from "../utils/formatTime";
+
 export const memberFields = [
   {
     name: "fullName",
@@ -55,8 +58,7 @@ export const memberFields = [
     options: [
       { label: "Active", value: "Active" },
       { label: "Inactive", value: "Inactive" },
-      { label: "Expired", value: "Expired" },
-      { label: "Pending", value: "Pending" },
+
     ],
     defaultValue: "Active",
   },
@@ -68,3 +70,18 @@ export const memberFields = [
     colSpan: 2,
   },
 ];
+
+
+export const attendanceFeilds = [
+
+  { key: "memberName", label: "Name", sortable: true },
+
+  { key: "firstIn", label: "Last In Time",getValue: (val) => (val ? formatTime(val) : ""),},
+  { key: "lastOut", label: "Last Out Time" ,getValue:(val)=>(val ? formatTime(val): "" )},
+  {key:"date", label:"Date", getValue:(val)=> (val?formatDate(val):""),sortable:true}
+   
+  
+
+];
+
+

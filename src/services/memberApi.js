@@ -23,3 +23,9 @@ export const getPackages=()=>{
 export const getTrainers=()=>{
  return  api.get("/trainers")
 }
+
+
+
+export const getAttendance=()=>{
+ return  api.get("/attendance")
+}

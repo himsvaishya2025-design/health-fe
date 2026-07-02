@@ -10,6 +10,7 @@ import MembersList from "./pages/Members/MembersList";
 import MembersPage from "./pages/Members/MembersPage";
 import AddMember from "./pages/Members/AddMember"
 import EditMember from "./pages/Members/EditMember";
+import AttendanceList from "./pages/Attendance/AttendanceList";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
                <Route path="members/edit/:memberId" element={<EditMember/>} />
           <Route path="trainers" element={<Trainers />} />
           <Route path="packages" element={<Packages />} />
+           <Route path="attendance" element={<AttendanceList />} />
         </Route>
       </Routes>
     </BrowserRouter>

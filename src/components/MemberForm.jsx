@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useRef } from "react";
 import { FiArrowLeft } from "react-icons/fi";
 
 const inputClass =
   "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-800 " +
   "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent " +
   "placeholder-gray-400 transition";
-
+const EMPTY_INITIAL_VALUES  = {};
 const MemberForm = ({
   title,
   fields = [],
-  initialValues = {},
+  initialValues = EMPTY_INITIAL_VALUES,
   mode = "add",
   onSubmit,
   onCancel,
@@ -17,16 +17,45 @@ const MemberForm = ({
 }) => {
   const [formData, setFormData] = useState({});
 
-  useEffect(() => {
-    if (!fields.length) return;
-    const values = {};
-    fields.forEach((field) => {
-      let value = initialValues[field.name];
-      if (field.getValue) value = field.getValue(value);
-      values[field.name] = value ?? field.defaultValue ?? "";
-    });
-    setFormData(values);
-  }, [fields, initialValues]);
+const prev = useRef({});
+
+useEffect(() => {
+  console.log("fields changed:", prev.current.fields !== fields);
+  console.log(
+    "initialValues changed:",
+    prev.current.initialValues !== initialValues
+  );
+
+  prev.current = { fields, initialValues };
+
+  if (!fields.length) return;
+
+  const values = {};
+
+  fields.forEach((field) => {
+    let value = initialValues[field.name];
+    if (field.getValue) value = field.getValue(value);
+    values[field.name] = value ?? field.defaultValue ?? "";
+  });
+
+  setFormData(values);
+}, [fields, initialValues]);
+
+//   useEffect(() => {
+//   console.log("MemberForm effect");
+
+//   if (!fields.length) return;
+
+//   const values = {};
+
+//   fields.forEach((field) => {
+//     let value = initialValues[field.name];
+//     if (field.getValue) value = field.getValue(value);
+//     values[field.name] = value ?? field.defaultValue ?? "";
+//   });
+
+//   setFormData(values);
+// }, [fields, initialValues]);
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;

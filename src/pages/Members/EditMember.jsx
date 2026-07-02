@@ -41,6 +41,7 @@ const EditMember = () => {
   const handleUpdate = async (data) => {
     setLoading(true);
     try {
+      console.log("data of update",data)
       await updateMember(memberId, data);
       setToast({ type: "success", message: "Member updated successfully!" });
       setTimeout(() => navigate("/members"), 1500);
